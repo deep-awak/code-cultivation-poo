@@ -20,6 +20,7 @@ class Plant:
 
 
 def main() -> None:
+    print("=== Plant Factory Output ===")
     rose: Plant = Plant("Rose", 25.0, 30)
     oak: Plant = Plant("Oak", 200.0, 365)
     cactus: Plant = Plant("Cactus", 5.0, 90)
