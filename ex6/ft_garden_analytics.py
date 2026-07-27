@@ -12,19 +12,19 @@ class Plant:
             return f"Stats: {self.grow_calls} grow, {self.age_calls} age, \
 {self.show_calls} show"
 
-    def __init__(self, name: str, height: float, age: int) -> None:
+    def __init__(self, name: str, start_height: float, start_age: int) -> None:
         self.name: str = name
-        self._height: float = height
-        self._age: int = age
+        self._height: float = start_height
+        self._age: int = start_age
         self._stats: Plant.Stats = Plant.Stats()
 
     def show(self) -> str:
         self._stats.show_calls += 1
         return f"{self.name}: {self._height}cm, {self._age} days old"
 
-    def grow(self) -> float:
+    def grow(self, growth: float) -> float:
         self._stats.grow_calls += 1
-        self._height = round(self._height + 0.8, 1)
+        self._height = round(self._height + growth, 1)
         self._age += 1
         return self._height
 
@@ -38,6 +38,9 @@ class Plant:
     def get_age(self) -> int:
         return self._age
 
+    def get_stats(self) -> "Plant.Stats":
+        return self._stats
+
     @classmethod
     def create_anonymous(cls) -> "Plant":
         return cls("Unknown plant", 0.0, 0)
@@ -46,27 +49,27 @@ class Plant:
     def is_older_than_year(days: int) -> bool:
         return days > 365
 
-    def _validate_positive(self, value: float, field_name: str) -> bool:
+    def _is_invalid(self, value: float, field: str) -> bool:
         if value < 0:
-            print(f"{self.name}: Error, {field_name} can't be negative")
-            print(f"{field_name.capitalize()} update rejected")
-            return False
-        return True
+            print(f"{self.name}: Error, {field} can't be negative\n \
+    {field.capitalize()} update rejected")
+        return value < 0
 
     def set_height(self, new_height: float) -> None:
-        if self._validate_positive(new_height, "height"):
+        if not self._is_invalid(new_height, "height"):
             self._height = round(float(new_height), 1)
             print(f"Height updated: {new_height}cm")
 
     def set_age(self, new_age: int) -> None:
-        if self._validate_positive(new_age, "age"):
+        if not self._is_invalid(new_age, "age"):
             self._age = new_age
             print(f"Age updated: {self._age} days")
 
 
 class Flower(Plant):
-    def __init__(self, name: str, height: float, age: int, color: str) -> None:
-        super().__init__(name, height, age)
+    def __init__(self, name: str, start_height: float, start_age: int,
+                 color: str) -> None:
+        super().__init__(name, start_height, start_age)
         self.color: str = color
         self._is_bloomed: bool = False
 
@@ -84,8 +87,9 @@ class Flower(Plant):
 
 
 class Seed(Flower):
-    def __init__(self, name: str, height: float, age: int, color: str) -> None:
-        super().__init__(name, height, age, color)
+    def __init__(self, name: str, start_height: float, start_age: int,
+                 color: str) -> None:
+        super().__init__(name, start_height, start_age, color)
 
     def show(self) -> str:
         base_info = super().show()
@@ -94,9 +98,9 @@ class Seed(Flower):
 
 
 class Tree(Plant):
-    def __init__(self, name: str, height: float, age: int,
+    def __init__(self, name: str, start_height: float, start_age: int,
                  trunk_diameter: float) -> None:
-        super().__init__(name, height, age)
+        super().__init__(name, start_height, start_age)
         self.trunk_diameter: float = trunk_diameter
         self.shade_calls: int = 0
 
@@ -111,7 +115,7 @@ cm long and {self.trunk_diameter}cm wide.")
 
 
 def display_plant_analytics(plant: Plant) -> None:
-    print(plant._stats.display())
+    print(plant.get_stats().display())
     if isinstance(plant, Tree):
         print(f"  {plant.shade_calls} shade")
 
@@ -127,7 +131,7 @@ def main() -> None:
     print(" [statistics for Rose]")
     display_plant_analytics(rose)
     print(" [asking the rose to grow and bloom]")
-    rose.grow()
+    rose.grow(0.8)
     rose.bloom()
     print(rose.show())
     print("[statistics for Rose]")
@@ -145,7 +149,7 @@ def main() -> None:
     sunflower = Seed("Sunflower", 80.0, 45, "yellow")
     print(sunflower.show())
     print(" [make sunflower grow, age and bloom]")
-    sunflower.grow()
+    sunflower.grow(0.8)
     sunflower.age()
     setattr(sunflower, '_height', 110.0)
     setattr(sunflower, '_age', 65)
