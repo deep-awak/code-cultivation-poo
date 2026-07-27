@@ -9,8 +9,8 @@ class Plant:
     def show(self) -> str:
         return f"{self.name}: {self.height}cm, {self._age} days old"
 
-    def grow(self) -> float:
-        self.height = round(self.height + 0.8, 1)
+    def grow(self, growth: float) -> float:
+        self.height = round(self.height + growth, 1)
         return self.height
 
     def age(self) -> int:
@@ -26,7 +26,7 @@ def main() -> None:
 
     for day in range(1, 8):
         print(f"=== Day {day} ===")
-        rose.grow()
+        rose.grow(0.8)
         rose.age()
         print(rose.show())
 
