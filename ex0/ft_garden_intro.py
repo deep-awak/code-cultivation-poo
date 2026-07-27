@@ -11,7 +11,7 @@ def ft_garden_intro() -> str:
 def main() -> None:
     print("=== Welcome to My garden ===")
     print(ft_garden_intro())
-    print("=== End of Program ===")
+    print("\n=== End of Program ===")
 
 
 if __name__ == "__main__":
