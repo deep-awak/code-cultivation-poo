@@ -2,16 +2,16 @@
 
 
 class Plant:
-    def __init__(self, name: str, height: float, age: int) -> None:
+    def __init__(self, name: str, start_height: float, start_age: int) -> None:
         self.name: str = name
-        self._height: float = height
-        self._age: int = age
+        self._height: float = start_height
+        self._age: int = start_age
 
     def show(self) -> str:
         return f"{self.name}: {self._height}cm, {self._age} days old"
 
-    def grow(self) -> float:
-        self._height = round(self._height + 0.8, 1)
+    def grow(self, growth: float) -> float:
+        self._height = round(self._height + growth, 1)
         self._age += 1
         return self._height
 
@@ -40,8 +40,9 @@ class Plant:
 
 
 class Flower(Plant):
-    def __init__(self, name: str, height: float, age: int, color: str) -> None:
-        super().__init__(name, height, age)
+    def __init__(self, name: str, start_height: float, start_age: int,
+                 color: str) -> None:
+        super().__init__(name, start_height, start_age)
         self.color: str = color
         self._is_bloomed: bool = False
 
@@ -56,9 +57,9 @@ class Flower(Plant):
 
 
 class Tree(Plant):
-    def __init__(self, name: str, height: float, age: int,
+    def __init__(self, name: str, start_height: float, start_age: int,
                  trunk_diameter: float) -> None:
-        super().__init__(name, height, age)
+        super().__init__(name, start_height, start_age)
         self.trunk_diameter: float = trunk_diameter
 
     def produce_shade(self) -> None:
@@ -71,14 +72,14 @@ cm long and {self.trunk_diameter}cm wide.\n")
 
 
 class Vegetable(Plant):
-    def __init__(self, name: str, height: float, age: int,
+    def __init__(self, name: str, start_height: float, start_age: int,
                  harvest_season: str) -> None:
-        super().__init__(name, height, age)
+        super().__init__(name, start_height, start_age)
         self.harvest_season: str = harvest_season
         self.nutritional_value: int = 0
 
-    def grow(self) -> float:
-        new_height = super().grow()
+    def grow(self, growth: float) -> float:
+        new_height = super().grow(growth)
         self.nutritional_value += 1
         return new_height
 
@@ -108,7 +109,7 @@ def main() -> None:
     print(tomato.show())
     print("[make tomato grow and age for 20 days]")
     for _ in range(20):
-        tomato.grow()
+        tomato.grow(0.8)
     print(tomato.show())
 
 
