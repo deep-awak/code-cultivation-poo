@@ -24,6 +24,7 @@ P0/            # Module P0: subject PDF + small exercises (ex0..ex7)
 P1/            # Module P1: subject PDF + exercises (ex0..ex6)
 P2/            # Module P2: exercises (ex0..ex4)
 P3/            # Module P3: exercises (ex0..ex6) + module3.pdf
+P4/            # Modulea P4
 ```
 
 Inside each `Pn`:
