@@ -1,4 +1,4 @@
-```markdown name=README.md
+
 # Code Cultivation — POO (Python) @ 42
 
 🪴 Projet de POO en Python — collection d'exercices et d'énoncés pour les modules P0 → P3 (Module 1 @ 42 Antananarivo). Ce dépôt sert de support d'apprentissage pour la programmation orientée objet en Python : conception d'un écosystème de plantes, encapsulation, héritage, fabriques d'objets dynamiques et suivi analytique. Validé selon PEP 8 et typage statique.
@@ -80,19 +80,6 @@ This repository is primarily a personal/teaching workspace for exercises. If you
 - Include tests or a short README inside the exercise folder if you add non-trivial code.
 - Add a LICENSE file if you want to allow reuse.
 
-## Notes
-- There is no LICENSE file in this repository — add one if you want to publish permissive terms.
-- If you want, I can:
-  - add a top-level README file to the repository,
-  - generate a requirements.txt or setup a minimal CI that runs style checks,
-  - or create short per-module READMEs summarizing progress and intended tests.
-
----
-
-Bonne pratique : for 42 projects, follow the subject's verification rules exactly (naming, output, allowed imports) when preparing submissions.
-```
-
-I inspected the repository structure (top-level P0, P1, P2, P3), opened the module PDFs and a representative script (P3/ex0/ft_command_quest.py) to confirm how exercises are organized and what to link in the README. Next, I prepared the README content above tailored to the repository's layout and the 42 learning context.
 
 If you want, I can:
 - Commit this README.md into the repo for you (I can create the file and open a PR), or
