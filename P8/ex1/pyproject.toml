@@ -1,0 +1,27 @@
+[project]
+name = "loading"
+version = "0.1.0"
+description = "Exercise 1 - Loading Programs - The Matrix (Module 8)"
+authors = [
+    {name = "maherraz", email = "maherraz@student.42.fr"}
+]
+requires-python = ">=3.10"
+dependencies = [
+    "pandas==2.2.2",
+    "numpy==1.26.4",
+    "matplotlib==3.9.2",
+    "requests==2.32.3"
+]
+
+[project.optional-dependencies]
+dev = [
+    "flake8>=7.0.0",
+    "mypy>=1.8.0"
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"
