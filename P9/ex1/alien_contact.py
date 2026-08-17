@@ -89,6 +89,14 @@ def main() -> None:
             witness_count=2,
             message_received="Hello",
         )
+        print("Valid contact report:")
+        print(f"ID: {valid_contact.contact_id}")
+        print(f"Type: {valid_contact.contact_type.value}")
+        print(f"Location: {valid_contact.location}")
+        print(f"Signal: {valid_contact.signal_strength}/10")
+        print(f"Duration: {valid_contact.duration_minutes} minutes")
+        print(f"Witnesses: {valid_contact.witness_count}")
+        print(f"Message: '{valid_contact.message_received}'")
     except ValidationError as e:
         print("Expected validation error:")
         print(e.errors()[0]["msg"].replace("Value error, ", ""))
