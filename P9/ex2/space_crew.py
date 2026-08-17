@@ -180,6 +180,16 @@ def main() -> None:
             budget_millions=2500.0,
             crew=crew_invalid,
         )
+        print("Valid mission created:")
+        print(f"Mission: {mission.mission_name}")
+        print(f"ID: {mission.mission_id}")
+        print(f"Destination: {mission.destination}")
+        print(f"Duration: {mission.duration_days} days")
+        print(f"Budget: ${mission.budget_millions}M")
+        print(f"Crew size: {len(mission.crew)}")
+        print("Crew members:")
+        for member in mission.crew:
+            print(f"- {member.name} ({member.rank.value}) - {member.specialization}")
     except ValidationError as e:
         print("Expected validation error:")
         _print_validation_errors(e)
