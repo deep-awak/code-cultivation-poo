@@ -58,6 +58,18 @@ def main() -> None:
             last_maintenance=datetime(2026, 8, 7, 22, 42, 42),
             is_operational=True,
         )
+        print("Valid station created:")
+        print(f"ID: {valide_station.station_id}")
+        print(f"Name: {valide_station.name}")
+        print(f"Crew: {valide_station.crew_size} people")
+        print(f"Power: {valide_station.power_level}%")
+        print(f"Oxygen: {valide_station.oxygen_level}%")
+        status = (
+            "Operational\n"
+            if valide_station.is_operational
+            else "Not Operational"
+        )
+        print(f"Status: {status}")
     except ValidationError as e:
         print(e.errors()[0]["msg"])
 
