@@ -43,8 +43,7 @@ class SpaceMission(BaseModel):
         has_high_rank = any(m.rank in required_ranks for m in self.crew)
         if not has_high_rank:
             raise ValueError(
-                "Mission must have at least one \
-Commander or Captain"
+                "Mission must have at least one Commander or Captain"
             )
 
         if self.duration_days > 365:
@@ -53,27 +52,49 @@ Commander or Captain"
             )
             if experienced_count < len(self.crew) / 2:
                 raise ValueError(
-                    "Long missions require at least 50% \
-experienced crew (5+ years)"
+                    "Long missions require at least 50% experienced crew (5+ years)"
                 )
 
         inactive_members = [m.name for m in self.crew if not m.is_active]
         if inactive_members:
             raise ValueError(
-                f"All crew members must be active. \
-Inactive: {', '.join(inactive_members)}"
+                f"All crew members must be active. Inactive: {', '.join(inactive_members)}"
             )
 
         return self
+
+
+def _safe_create_crew_member(**kwargs) -> CrewMember:
+    """Create a CrewMember and re-raise ValidationError with a helpful message.
+
+    This helper centralizes CrewMember creation so callers can handle member-level
+    validation errors explicitly instead of letting them bubble as unexpected
+    exceptions during list construction.
+    """
+    try:
+        return CrewMember(**kwargs)
+    except ValidationError as e:
+        # Attach the member_id (if any) to the message for easier debugging
+        mid = kwargs.get("member_id") or "<unknown>"
+        msg = f"Invalid CrewMember (id={mid}): {e.errors()}"
+        raise ValidationError(e.raw_errors, model=CrewMember) from Exception(msg)
+
+
+def _print_validation_errors(e: ValidationError) -> None:
+    # Print each error message in a compact, readable way
+    for err in e.errors():
+        loc = "->".join(str(x) for x in err.get("loc", []))
+        print(f"Validation error at {loc}: {err.get('msg')}")
 
 
 def main() -> None:
     print("Space Mission Crew Validation")
     print("=" * 20)
 
+    # Build crew in a safe way so member-level validation errors are handled
     try:
         crew_valid = [
-            CrewMember(
+            _safe_create_crew_member(
                 member_id="CM001",
                 name="Sarah Connor",
                 rank=RankEnum.COMMANDER,
@@ -82,7 +103,7 @@ def main() -> None:
                 years_experience=15,
                 is_active=True,
             ),
-            CrewMember(
+            _safe_create_crew_member(
                 member_id="CM002",
                 name="John Smith",
                 rank=RankEnum.LIEUTENANT,
@@ -91,7 +112,7 @@ def main() -> None:
                 years_experience=6,
                 is_active=True,
             ),
-            CrewMember(
+            _safe_create_crew_member(
                 member_id="CM003",
                 name="Alice Johnson",
                 rank=RankEnum.OFFICER,
@@ -121,19 +142,18 @@ def main() -> None:
         print(f"Crew size: {len(mission.crew)}")
         print("Crew members:")
         for member in mission.crew:
-            print(
-                f"- {member.name} \
-({member.rank.value}) - {member.specialization}"
-            )
+            print(f"- {member.name} ({member.rank.value}) - {member.specialization}")
 
     except ValidationError as e:
-        print(f"Excepted error : {e}")
+        print("Unexpected validation error while creating valid mission:")
+        _print_validation_errors(e)
+
     print("")
     print("=" * 20)
 
     try:
         crew_invalid = [
-            CrewMember(
+            _safe_create_crew_member(
                 member_id="CM002",
                 name="John Smith",
                 rank=RankEnum.LIEUTENANT,
@@ -141,7 +161,7 @@ def main() -> None:
                 specialization="Navigation",
                 years_experience=6,
             ),
-            CrewMember(
+            _safe_create_crew_member(
                 member_id="CM003",
                 name="Alice Johnson",
                 rank=RankEnum.OFFICER,
@@ -162,7 +182,7 @@ def main() -> None:
         )
     except ValidationError as e:
         print("Expected validation error:")
-        print(e.errors()[0]["msg"].replace("Value error, ", ""))
+        _print_validation_errors(e)
 
 
 if __name__ == "__main__":
